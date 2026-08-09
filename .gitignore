@@ -1,5 +1,2 @@
 # Ignore datasets and heavy model files
 dataset/
-*.zip
-*.h5
-*.keras
