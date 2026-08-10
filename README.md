@@ -5,10 +5,11 @@ An AI-powered computer vision pipeline that detects face mask compliance in real
 ## 📸 Demo
 
 
-![With Mask Demo](image_placeholder_1.jpg)
+![With Mask Demo](<img width="1600" height="1014" alt="withMask" src="https://github.com/user-attachments/assets/a4e3fb1b-cf0b-4e56-ac8b-812c79766dfd" />)
 > *Accurately detecting correctly worn KN95/Surgical masks.*
 
-![No Mask / Incorrect Mask Demo](image_placeholder_2.jpg)
+![No Mask / Incorrect Mask Demo](<img width="1600" height="1020" alt="withoutMask" src="https://github.com/user-attachments/assets/85af5372-b5c7-4648-b6b0-404564452506" />
+)
 > *Flagging non-compliance and incorrectly worn masks in real-time.*
 
 ## 🚀 Tech Stack
