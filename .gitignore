@@ -1,2 +1,3 @@
 # Ignore datasets and heavy model files
 dataset/
+.DS_Store
