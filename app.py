@@ -3,17 +3,17 @@ import numpy as np
 from tensorflow.keras.models import load_model # type: ignore
 
 
-# 1. Load the trained Deep Learning model
+# 1. Loading the trained Deep Learning model
 print("Loading mask detection model...")
 model = load_model('ppe_mask_model.keras')
 
 class_names = ['Incorrect Mask', 'With Mask', 'No Mask']
 colors = [(0, 255, 255), (0, 255, 0), (0, 0, 255)]
 
-# 2. Initialize YuNet Face Detector
+# 2. Initializing YuNet Face Detector
 print("Loading YuNet face detector...")
 face_detector = cv2.FaceDetectorYN.create(
-    "face_detection_yunet_2026may.onnx", # Updated for OpenCV 5
+    "face_detection_yunet_2026may.onnx", 
     "",
     (320, 320), 
     score_threshold=0.7, 
@@ -21,7 +21,7 @@ face_detector = cv2.FaceDetectorYN.create(
     top_k=5000
 )
 
-# 3. Initialize the webcam feed
+# 3. Initializing the webcam feed
 print("Starting webcam... Press 'q' on your keyboard to quit.")
 cap = cv2.VideoCapture(0)
 
@@ -46,8 +46,8 @@ while True:
             box = face[0:4].astype(np.int32)
             x, y, w, h = box[0], box[1], box[2], box[3]
             
-            # --- FIXED: Padding & Boundary Safeguards ---
-            # Expand the bounding box slightly (20% padding) to capture full mask context
+        
+            # Expanding the bounding box slightly to capture full mask context
             pad_x = int(w * 0.2)
             pad_y = int(h * 0.2)
             
@@ -59,18 +59,18 @@ while True:
             # Extracting just the face's pixel matrix using guarded coordinates
             face_roi = frame[y1:y2, x1:x2]
             
-            # Skip if the ROI is empty or invalid
+            # Skiping if the ROI is empty or invalid
             if face_roi.size == 0 or face_roi.shape[0] == 0 or face_roi.shape[1] == 0:
                 continue
             
-            ## Convert BGR to RGB and resize
+            ## Converting BGR to RGB and resize
             face_rgb = cv2.cvtColor(face_roi, cv2.COLOR_BGR2RGB)
             face_resized = cv2.resize(face_rgb, (224, 224))
             
-            # Add batch dimension and ensure it is a float array
+            # Adding batch dimension and ensuring it is a float array
             face_array = np.expand_dims(face_resized, axis=0).astype(np.float32)
             
-            # Feed the RAW face directly into the model (the model preprocesses it internally!)
+            # Feeding the RAW face directly into the model (the model preprocesses it internally!)
             predictions = model.predict(face_array, verbose=0)
             class_idx = np.argmax(predictions[0])
             confidence = predictions[0][class_idx] * 100
@@ -80,7 +80,6 @@ while True:
             color = colors[class_idx]
             
             # Drawing the bounding box and text overlay onto the live frame
-            # Note: We draw the box around the ORIGINAL YuNet box for tight tracking visual
             cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)
             cv2.putText(frame, label, (x, max(y - 10, 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
             
@@ -91,6 +90,6 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Clean up the camera and close windows when done
+# Cleaning up the camera and close windows when done
 cap.release()
 cv2.destroyAllWindows()
